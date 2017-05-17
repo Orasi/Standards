@@ -42,6 +42,21 @@ Good practice would be to have a test constant defined that holds the default im
 
 ```driver.manage().timeouts().implicityWait(Constants.ELEMENT_TIMEOUT, TimeUnit.SECONDS)```
 
+## Explicit Waits ##
+
+Explicit waits are for having the test automation halt execution while waiting for a condition to be met.  They can range from a hard wait (waiting for a specified time amount) or waiting for an element to be visible on the page
+
+Hard wait:
+'''Thread.sleep(1000)'''
+
+In general, you want to avoid having hard waits in your test, as they are inefficient and can add up to a lot of wasted time over a test set execution.  There will be cases where using 1-3 second hard waits makes sense.
+
+Instead of using hard waits, you will want to use the Expected Conditions class that selenium libraries provide.  
+
+### Expected Condidtions ###
+
+
+
 ----------
 
 # Page Object Model (POM) #
