@@ -26,6 +26,22 @@ If you are working with an element that does not have a unique identifier, the r
 
 # Expicit & Implicit Waits #
 
+## Implicit Waits ##
+
+Implicit waits set a timetout for the driver when polling the dom to look for an element. This not only effects the command findElement() or findElements() but will also effect commands such as isEnabled(), isVisible(), etc.  So if the timeout is set to 0, you will get a 'NoSuchElement' exception immediatly if the element is not found on the page.  If you set it to 10, then the driver will poll the dom for 10 secodns before throwing an exception.  
+
+Suggested usage is to set the implicit timeout to a more generous amount, when the driver is first created.  
+
+```
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+```
+
+There may be times when you want to change the implicit wait during a test run.  For example, if you know all the elmenents are already rendered on the page, and you don't want the test hanging if an element isn't found, you can set the implicit wait back to 0 before working with an element.  A word of caution though - you will have to remember to set the imlicit wait back to the test default amount, otherwise it will be set to 0 for the remainder of the life of the driver (or if is changed somewhere else in the test).  
+
+Good practice would be to have a test constant defined that holds the default implicit timeout for your project.  You will then refer to that constant anytime you want to change the imploicit wait back to the test default.  
+
+```driver.manage().timeouts().implicityWait(Constants.ELEMENT_TIMEOUT, TimeUnit.SECONDS)```
+
 ----------
 
 # Page Object Model (POM) #
