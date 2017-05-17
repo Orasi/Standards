@@ -24,6 +24,10 @@ If you are working with an element that does not have a unique identifier, the r
 
 ----------
 
+# Expicit & Implicit Waits #
+
+----------
+
 # Page Object Model (POM) #
 
 The Page Object Model (POM) is an industry standard method of automation test code creation and organization.  
@@ -52,6 +56,21 @@ If you need to use the text of an element more than once, use a variable to hold
 
 ```String text = driver.FindElementBy(id = “someID”).getText();```
 
-If you need to search through a list of elements to find the one you need, try and see if using xpath or css selectors will achieve it.  
+If you need to search through a list of similar elements to find the one you need, try and see if using xpath or css selectors will achieve it.  
 
-In this example - the driver has to repeatedly go to the webpage, find the element, and grab the text. 
+In this example - the driver has to repeatedly go to the webpage to grab the text from an element.
+
+```
+List<WebElement> filterList = driver.findElements(By.tagName("input"));
+for (WebElement filterItem:filterList){
+	if (filterItem.getText().equalsIgnoreCase("Blue"){
+		element.click();
+		break;
+	}
+}
+```
+
+The same can be achieved through one command.  
+```
+driver.findElement(By.xpath("//input[text='Blue']").click();
+```
