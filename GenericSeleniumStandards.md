@@ -11,6 +11,18 @@ Uniquely identifying objects is essential to having reliable and robust automate
  6. Tag
  7. Link Text
  
+### XPath Recommendations ###
+ 
+In general, you will want to avoid using the absolute xpath of an element.
+ 
+**Absolute**: It is a complete path of an element starting at the root element all the way to the desired element.  It starts with a single forward slash (/).  While this is the faster way to locate an element by xpath it is not reliable.  If the structure of the html changes, then the xpath you have used will be broken.  Example:
+
+```/html/body/form[1]```
+
+**Relative**: The path starts with the desired element and goes from there.  It is slower than using absolute, but is more reliable and you are less likely to have to update your code.  
+
+If you are working with an element that does not have a unique identifier, the recommendations are to find a nearby element with an unique ID, and to use the relationship in your xpath expression.  This is achieved using xpath axis such as parent, child, preceding-sibling, etc.  See the xpath tutorial for more details.  
+
 ----------
 
 ## Page Object Model (POM)
