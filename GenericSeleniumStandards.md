@@ -40,23 +40,36 @@ There may be times when you want to change the implicit wait during a test run. 
 
 Good practice would be to have a test constant defined that holds the default implicit timeout for your project.  You will then refer to that constant anytime you want to change the imploicit wait back to the test default.  
 
-```driver.manage().timeouts().implicityWait(Constants.ELEMENT_TIMEOUT, TimeUnit.SECONDS)```
+```
+driver.manage().timeouts().implicityWait(Constants.ELEMENT_TIMEOUT, TimeUnit.SECONDS)
+```
 
 ## Explicit Waits ##
 
 Explicit waits are for having the test automation halt execution while waiting for a condition to be met.  They can range from a hard wait (waiting for a specified time amount) or waiting for an element to be visible on the page
 
 Hard wait:
-'''Thread.sleep(1000)'''
+```
+Thread.sleep(1000)
+```
 
 In general, you want to avoid having hard waits in your test, as they are inefficient and can add up to a lot of wasted time over a test set execution.  There will be cases where using 1-3 second hard waits makes sense.
 
 Instead of using hard waits, you will want to use the Expected Conditions class that selenium libraries provide.  
 
-### Expected Condidtions ###
+### Expected Conditions ###
 
+Selenium provides an Expected Conditions class to help with object synching.  There are many available methods to use such as whether an element is visible, present, clickable, etc.  The java, c#, and python bindings come with a exepected conditions class.  See these links for all possible conditions:
 
+Suggested usage is to combing the Expected conditions class with the WebDriverWait class.  The webdriverwait class extends a FluentWait class so that it will poll the dom every 500 ms to see whether the condition has been met.  
 
+[WebDriverWait class](https://github.com/SeleniumHQ/selenium/blob/master/java/client/src/org/openqa/selenium/support/ui/WebDriverWait.java#L69)
+
+Java usage example:
+```
+WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(elementXpath)));
+```
 ----------
 
 # Page Object Model (POM) #
