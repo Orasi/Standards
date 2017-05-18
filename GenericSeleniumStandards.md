@@ -70,6 +70,11 @@ Java usage example:
 WebDriverWait wait = new WebDriverWait(driver,10);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(elementXpath)));
 ```
+
+**Recommendations**
+You will want to have a separate class with your own custom methods to hold many of the common expected conditions you use.  This will clean up your test code as well.  
+
+Also, using the WebDriverWait with the ExpectedConditions class will throw a Timeout exception if the condition is not met.  The recommendation is to use a try/catch to catch the exception and report out in a more appropriate manner.  
 ----------
 
 # Page Object Model (POM) #
