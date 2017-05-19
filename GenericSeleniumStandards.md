@@ -30,7 +30,7 @@ If you are working with an element that does not have a unique identifier, the r
 
 Implicit waits set a timetout for the driver when polling the dom to look for an element. This not only effects the command findElement() or findElements() but will also effect commands such as isEnabled(), isVisible(), etc.  So if the timeout is set to 0, you will get a 'NoSuchElement' exception immediatly if the element is not found on the page.  If you set it to 10, then the driver will poll the dom for 10 secodns before throwing an exception.  
 
-Suggested usage is to set the implicit timeout to a more generous amount, when the driver is first created.  
+Suggested usage is to set the implicit timeout to a more generous amount, when the driver is first created.  This can help with page transitions, to give the web elements a time to render on the page before interacting.  
 
 ```
 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -84,6 +84,8 @@ public boolean waitForElementToBeVisible(WebElement element, int timeout){
 	}     
 	}
 ```
+
+A word of caution when mixing both implicit & explicit waits, as you will get some unreliable waiting times.  For example, if you have the implicit wait of the webdriver set to 10 seconds, and you 
 ----------
 
 # Page Object Model (POM) #
@@ -139,7 +141,52 @@ public class QuickTest {
  - Use of wrapper methods in page classes to contain larger functionality of the page.  
 	 - Example - createApplication() method.  Might contain the functionality of entering data in a form, clicking submit, and handling any alerts.  
 	 
-# Page Factory Model #
+# Page Factory #
+
+Page Factory is a factory class that helps to support and enhance the Page Object Model.  It allows use you use annotations to automatically find the web elements without having to call the findElment methods on the webdriver.  It makes the code look cleaner and eliminates some boiler code.  It accomplishes the same thing as the POM, and is more of a stylistic choice.  In order to use PageFactory, you will have to initialize all the page objects, which can be done in the constructor.  
+
+Java usage example of page factory style:
+```
+public class LoginFactoryExample {
+	
+	private WebDriver driver;
+	
+	@FindBy(id="username") private WebElement txtUsername;
+	@FindBy(id="password") private WebElement txtPassword;
+	@FindBy(id="submit") private WebElement btnLogin;
+	
+	//Constructor
+	public LoginFactoryExample(WebDriver driver){
+		PageFactory.initElements(driver, this);
+	}
+	
+	public void login(String username, String password){
+		txtUsername.sendKeys(username);
+		txtPassword.sendKeys(password);
+		btnLogin.click();
+	}
+
+	public boolean isLoginPageDisplayed(){
+		return txtUsername.isDisplayed();
+	}
+}
+```
+Corresponding test class, which looks just like the POM test case:
+```
+public class QuickTest {
+  
+	@Test
+	public void f() {
+		WebDriver driver = new FirefoxDriver();
+		driver.get("your-application-url");
+		
+		LoginFactoryExample loginPage = new LoginFactoryExample(driver);
+		Assert.assertTrue(loginPage.isLoginPageDisplayed(), "Verify login page is displayed");
+		loginPage.login("username", "password");
+	}
+}
+```
+
 	 
 ----------
 
