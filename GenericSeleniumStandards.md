@@ -71,10 +71,19 @@ WebDriverWait wait = new WebDriverWait(driver,10);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(elementXpath)));
 ```
 
-**Recommendations**
-You will want to have a separate class with your own custom methods to hold many of the common expected conditions you use.  This will clean up your test code as well.  
-
-Also, using the WebDriverWait with the ExpectedConditions class will throw a Timeout exception if the condition is not met.  The recommendation is to use a try/catch to catch the exception and report out in a more appropriate manner.  
+#### Recommendations ####
+You will want to house your own custom expected conditions methods separatly.  Using a wrapper method on the expected conditions will help clean up the page classes.  Additionally, the WebDriverWait with the ExpectedConditions class will throw a Timeout exception if the condition is not met.  The recommendation is to use a try/catch to catch the exception and report out in a more appropriate manner.  There are multiple ways to achieve this, below is a simple example in Java language:
+```
+public boolean waitForElementToBeVisible(WebElement element, int timeout){
+	WebDriverWait wait = new WebDriverWait(driver, timeout);
+	try {
+		wait.until(ExpectedConditions.visibilityOf(element));
+		return true;
+	} catch (TimeoutException e){
+		return false;
+	}     
+	}
+```
 ----------
 
 # Page Object Model (POM) #
