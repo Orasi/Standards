@@ -96,6 +96,43 @@ Page classes will generally contain all the objects on the page declared at the 
 
 Test Classes contain the flow of the test including all the validations(assertions)
 
+Java usage example of a page class:
+```
+public class LoginPage {
+
+	private By txtUseranme = By.id("username");
+	private By txtPassord = By.id("password");
+	private By btnLogin = By.name("loginbtn");
+	private WebDriver driver;
+
+	public LoginPage(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public void userLogin(String userName, String password) {
+		driver.findElement(txtUseranme).sendKeys(userName);
+		driver.findElement(txtPassord).sendKeys(password);
+		driver.findElement(btnLogin).click();
+	}
+
+}
+```
+Java usage example of a test class:
+```
+public class QuickTest {
+  
+	@Test
+	public void f() {
+		WebDriver driver = new FirefoxDriver();
+		driver.get("your-application-url");
+		
+		LoginPage loginPage = new LoginPage(driver);
+		Assert.assertTrue(loginPage.isLoginPageDisplayed(), "Verify login page is displayed");
+		loginPage.userLogin("username", "password");
+	}
+}
+```
+
 ## Recommendations ##
 
  - Use of page class for common areas in the application such as navigation bars, pop up pages such as forms, 
